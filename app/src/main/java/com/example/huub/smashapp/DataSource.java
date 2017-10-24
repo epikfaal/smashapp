@@ -49,6 +49,15 @@ public class DataSource {
 
     }
 
+    public void updateEvent(int eventID, String newName, String newDate, float newLongtitude, float newLatitude){
+        ContentValues values = new ContentValues();
+        values.put(Event.EventDBEntry.COLUMN_NAME_EVENTNAME, newName);
+        values.put(Event.EventDBEntry.COLUMN_NAME_EVENTDATE, newDate);
+        values.put(Event.EventDBEntry.COLUMN_NAME_EVENTLONGTITUDE, newLongtitude);
+        values.put(Event.EventDBEntry.COLUMN_NAME_EVENTLATITUDE, newLatitude);
+        db.update(Event.EventDBEntry.TABLE_NAME, values, Event.EventDBEntry._ID + "=?", new String[]{eventID+""});
+    }
+
     //function for debugging database purposes
     public void debug(){
         Cursor cursor = db.rawQuery("SELECT * FROM " + Event.EventDBEntry.TABLE_NAME, null);

@@ -119,11 +119,21 @@ public class OverViewActivity extends AppCompatActivity implements EventListAdap
     }
 
     @Override
-    public void onEventClick(long index) {
+    public void onEventLocationClick(long index) {
         Intent intent = new Intent(this, MapsActivity.class);
         intent.putExtra("function", "showevent");
         intent.putExtra("id", index);
         startActivity(intent);
 
     }
+
+    @Override
+    public void onEditEventClick(long index){
+        Intent intent = new Intent(this, AddEventActivity.class);
+        intent.putExtra("function", "edit");
+        intent.putExtra("id", index);
+        startActivityForResult(intent, 1235);
+    }
+
+
 }

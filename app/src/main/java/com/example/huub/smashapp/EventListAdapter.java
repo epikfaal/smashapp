@@ -36,7 +36,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
     }
 
     public interface EventListClickListener{
-        void onEventClick(long index);
+        void onEventLocationClick(long index);
+        void onEditEventClick(long index);
     }
     public void swapCursor(Cursor cursor){
         if(dbCursor != null) dbCursor.close();
@@ -88,12 +89,18 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
         View.OnClickListener showOnmapClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clickListener.onEventClick(index);
+                clickListener.onEventLocationClick(index);
             }
         };
         holder.distance.setOnClickListener(showOnmapClickListener);
         holder.unit.setOnClickListener(showOnmapClickListener);
 
+        holder.edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickListener.onEditEventClick(index);
+            }
+        });
 
     }
 
@@ -103,7 +110,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
     }
 
     public class EventViewHolder extends RecyclerView.ViewHolder{
-        public TextView name, distance, unit, date;
+        public TextView name, distance, unit, date, edit;
         public View mView;
 
         EventViewHolder(View v){
@@ -113,6 +120,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             distance = (TextView) v.findViewById(R.id.distance);
             unit = (TextView) v.findViewById(R.id.unit);
             date = (TextView) v.findViewById(R.id.eventDate);
+            edit = (TextView) v.findViewById(R.id.editEvent);
         }
     }
 }

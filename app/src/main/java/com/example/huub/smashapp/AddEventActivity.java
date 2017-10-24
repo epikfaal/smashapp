@@ -29,8 +29,6 @@ public class AddEventActivity extends AppCompatActivity {
         longtitude = (EditText) findViewById(R.id.longTextField);
         latitude = (EditText) findViewById(R.id.latTextField);
         Button locationButton = (Button) findViewById(R.id.locationbutton);
-
-
         date.updateDate(date.getYear(), date.getMonth(), date.getDayOfMonth());
 
 
