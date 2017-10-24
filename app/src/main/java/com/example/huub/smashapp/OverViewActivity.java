@@ -102,8 +102,15 @@ public class OverViewActivity extends AppCompatActivity implements EventListAdap
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 1234 && resultCode == Activity.RESULT_OK){
-            String eventdate = data.getIntExtra("eventday", 1)+"-"+data.getIntExtra("eventMonth",1)+"-"+data.getIntExtra("eventYear", 2020);
+            String eventdate = data.getIntExtra("eventday", 1)+"-"+data.getIntExtra("eventmonth",1)+"-"+data.getIntExtra("eventyear", 2020);
             this.data.createEvent(data.getStringExtra("name"), eventdate, data.getFloatExtra("longtitude", 0), data.getFloatExtra("latitude", 0));
+            updateUI();
+        }
+
+        if(requestCode == 1235 && resultCode == Activity.RESULT_OK){
+            String eventdate = data.getIntExtra("eventday", 1)+"-"+data.getIntExtra("eventmonth",1)+"-"+data.getIntExtra("eventyear", 2020);
+            //System.out.println("TESTID= " + data.getLongExtra("id", -1));
+            this.data.updateEvent(data.getLongExtra("id", -1), data.getStringExtra("name"), eventdate, data.getFloatExtra("longtitude", 0), data.getFloatExtra("latitude", 0));
             updateUI();
         }
     }
