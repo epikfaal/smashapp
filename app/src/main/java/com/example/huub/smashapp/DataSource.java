@@ -76,5 +76,16 @@ public class DataSource {
 
     }
 
+    public long[] getAllEventIds(){
+        Cursor events = db.query(Event.EventDBEntry.TABLE_NAME, new String[]{Event.EventDBEntry._ID}, null, null, null, null, null);
+        long[] IDs = new long[events.getCount()];
+        int i = 0;
+        while(events.moveToNext()){
+            IDs[i] = events.getLong(events.getColumnIndex(Event.EventDBEntry._ID));
+            i++;
+        }
+        return IDs;
+    }
+
 
 }

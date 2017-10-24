@@ -27,6 +27,7 @@ public class OverViewActivity extends AppCompatActivity implements EventListAdap
     DataSource data;
     EventListAdapter rvAdapter;
     ArrayList<Event> eventList;
+    ToggleButton toggleButton;
     FloatingActionButton fab;
     LocationManager locationManager;
 
@@ -49,6 +50,8 @@ public class OverViewActivity extends AppCompatActivity implements EventListAdap
 
         data = new DataSource(this);
         data.open();
+
+        toggleButton = (ToggleButton) findViewById(R.id.mapsToggle);
 
         //PURELY DEBUGGING LOGGING CODE TODO: remove
         System.out.println("DATABASE DEBUG:");
@@ -88,6 +91,16 @@ public class OverViewActivity extends AppCompatActivity implements EventListAdap
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), AddEventActivity.class);
                 startActivityForResult(intent, 1234);
+            }
+        });
+
+        toggleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), MapsActivity.class);
+                intent.putExtra("function", "showAllEvents");
+                intent.putExtra("id", data.getAllEventIds());
+                startActivity(intent);
             }
         });
 

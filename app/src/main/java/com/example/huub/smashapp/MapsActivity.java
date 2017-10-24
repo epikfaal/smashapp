@@ -46,10 +46,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        DataSource source = new DataSource(this);
+        source.open();
 
         if(intent.getStringExtra("function").equals("showevent")){
-            DataSource source = new DataSource(this);
-            source.open();
+
 
             Cursor event = source.getEvent(intent.getLongExtra("id", -1));
 
@@ -67,6 +68,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.moveCamera(CameraUpdateFactory.zoomTo(PREFFERED_ZOOM_LEVEL_EVENT));
         }
 
+        if(intent.getStringExtra("function").equals("showAllEvents")){
+            long[] eventIDs = intent.getLongArrayExtra("id");
+            for(int i = 0; i < eventIDs.length; i++){
+                Cursor event = source.getEvent(eventIDs[i]);
+
+                event.moveToFirst();
+                String eventName = event.getString(event.getColumnIndex(Event.EventDBEntry.COLUMN_NAME_EVENTNAME));
+                double latitude = event.getDouble(event.getColumnIndex(Event.EventDBEntry.COLUMN_NAME_EVENTLATITUDE));
+                double longtitude = event.getDouble(event.getColumnIndex(Event.EventDBEntry.COLUMN_NAME_EVENTLONGTITUDE));
+
+                mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longtitude)).title(eventName));
+
+            }
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(POSITION_NETHERLANDS));
+            mMap.moveCamera(CameraUpdateFactory.zoomTo(PREFFERED_ZOOM_LEVEL_OVERVIEW));
+        }
 
         if(intent.getStringExtra("function").equals("picklocation")) {
 
@@ -84,5 +101,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             });
         }
+        source.close();
     }
 }
