@@ -27,6 +27,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
     private EventListClickListener clickListener;
     private Location currentLocation;
 
+
     public EventListAdapter(Cursor cursor, EventListClickListener listener)
     {
         dbCursor = cursor;
@@ -84,12 +85,14 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
         final Long index = dbCursor.getLong(dbCursor.getColumnIndex(Event.EventDBEntry._ID));
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener showOnmapClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clickListener.onEventClick(index);
             }
-        });
+        };
+        holder.distance.setOnClickListener(showOnmapClickListener);
+        holder.unit.setOnClickListener(showOnmapClickListener);
 
 
     }
