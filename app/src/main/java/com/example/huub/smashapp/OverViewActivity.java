@@ -47,8 +47,6 @@ public class OverViewActivity extends AppCompatActivity implements EventListAdap
                     1234 );
         }
 
-
-
         rv = (RecyclerView) findViewById(R.id.recyclerview);
         fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
 
@@ -57,9 +55,6 @@ public class OverViewActivity extends AppCompatActivity implements EventListAdap
 
         viewOnMapButton = (Button) findViewById(R.id.mapsToggle);
 
-        //PURELY DEBUGGING LOGGING CODE TODO: remove
-//        System.out.println("DATABASE DEBUG:");
-//        data.debug();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rv.setLayoutManager(layoutManager);

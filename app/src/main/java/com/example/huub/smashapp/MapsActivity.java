@@ -17,6 +17,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private Intent intent;
+    // These are some constants that create a more pleasant map viewing experience (set to target the netherlands)
     private final float PREFFERED_ZOOM_LEVEL_EVENT = 12.0f;
     private final float PREFFERED_ZOOM_LEVEL_OVERVIEW = 7.0f;
     private final LatLng POSITION_NETHERLANDS = new LatLng(52.13373, 5.395707);
@@ -48,9 +49,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         DataSource source = new DataSource(this);
         source.open();
 
+        // If we want to show a single event
+        // We get the event, create a marker and move the camera to the event position
         if(intent.getStringExtra("function").equals("showevent")){
-
-
             Cursor event = source.getEvent(intent.getLongExtra("id", -1));
 
             for(int i = 0; i < event.getColumnNames().length; i++)
@@ -60,18 +61,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             event.moveToFirst();
             double longtitude = event.getDouble(event.getColumnIndexOrThrow(Event.EventDBEntry.COLUMN_NAME_EVENTLONGTITUDE));
             double latitude = event.getDouble(event.getColumnIndex(Event.EventDBEntry.COLUMN_NAME_EVENTLATITUDE));
-            // Add a marker in Sydney and move the camera
+            // Add a marker at the location of the event and move the camera
             LatLng eventloc = new LatLng(latitude, longtitude);
             mMap.addMarker(new MarkerOptions().position(eventloc).title("Event"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(eventloc));
             mMap.moveCamera(CameraUpdateFactory.zoomTo(PREFFERED_ZOOM_LEVEL_EVENT));
         }
 
+        // If we want to show all events
+        // We get all events, create markers for each one and move the camera to the netherlands
         if(intent.getStringExtra("function").equals("showAllEvents")){
+            // The reason we do it with an array containing all event IDs and don't use DataSource.getAllEvents()
+            // is because I originally planned to be able to show each event in a country, howerver due to time constraints this never made it
             long[] eventIDs = intent.getLongArrayExtra("id");
             for(int i = 0; i < eventIDs.length; i++){
                 Cursor event = source.getEvent(eventIDs[i]);
 
+                // Move to the first and only row since this is NOT normal behaviour
                 event.moveToFirst();
                 String eventName = event.getString(event.getColumnIndex(Event.EventDBEntry.COLUMN_NAME_EVENTNAME));
                 double latitude = event.getDouble(event.getColumnIndex(Event.EventDBEntry.COLUMN_NAME_EVENTLATITUDE));
@@ -84,6 +90,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.moveCamera(CameraUpdateFactory.zoomTo(PREFFERED_ZOOM_LEVEL_OVERVIEW));
         }
 
+        // If we want the user to pick a location
+        // We create a clicklistener that returns to the last activity with the location
         if(intent.getStringExtra("function").equals("picklocation")) {
 
             mMap.moveCamera(CameraUpdateFactory.newLatLng(POSITION_NETHERLANDS));
