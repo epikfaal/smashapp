@@ -22,12 +22,16 @@ import java.util.ListIterator;
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventViewHolder> {
 
-    private List<Event> eventList;
     private Cursor dbCursor;
     private EventListClickListener clickListener;
     private Location currentLocation;
 
 
+    /**
+     * Creates the EventListAdapter
+     * @param cursor Cursor containing all events
+     * @param listener Listener containing functions handeling clicks on the edit button and the location
+     */
     public EventListAdapter(Cursor cursor, EventListClickListener listener)
     {
         dbCursor = cursor;
@@ -35,10 +39,18 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
         currentLocation = new Location("");
     }
 
+    /**
+     * interface for the ClickListeners
+     */
     public interface EventListClickListener{
         void onEventLocationClick(long index);
         void onEditEventClick(long index);
     }
+
+    /**
+     * Change cursor containing the events we want displayed
+     * @param cursor Cursor containing events to get displayed
+     */
     public void swapCursor(Cursor cursor){
         if(dbCursor != null) dbCursor.close();
         dbCursor = cursor;
@@ -46,22 +58,28 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
         notifyDataSetChanged();
     }
 
+    /**
+     * Set the current location of the user (callback for the location service)
+     * @param newLocation The new location of the user
+     */
     public void setLocation(Location newLocation){
         currentLocation = newLocation;
     }
 
     @Override
+    /**
+     * Set the Viewholder to be our custom Viewholder with the layout of an "event_row_item"
+     */
     public EventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.event_row_item, null);
-
-
-        System.out.println("test1");
-
         return new EventViewHolder(view);
     }
 
     @Override
+    /**
+     * Set all the information of the event to the right place in the viewholder
+     */
     public void onBindViewHolder(EventViewHolder holder, final int position) {
         if(!dbCursor.moveToPosition(position)){
             return;
@@ -73,7 +91,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
         eventLocation.setLatitude(dbCursor.getFloat(dbCursor.getColumnIndex(Event.EventDBEntry.COLUMN_NAME_EVENTLATITUDE)));
 
         name = dbCursor.getString(dbCursor.getColumnIndex(Event.EventDBEntry.COLUMN_NAME_EVENTNAME));
-        distance = (eventLocation.distanceTo(currentLocation)/1000) + "";
+        distance = String.format("%.1f", eventLocation.distanceTo(currentLocation)/1000);
+        // originally wanted to change the unit to metres when very close to a location but due to time constraints, went with allways Kilometres
         unit = "km";
         date = dbCursor.getString(dbCursor.getColumnIndex(Event.EventDBEntry.COLUMN_NAME_EVENTDATE));
 
@@ -105,6 +124,9 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
     }
 
     @Override
+    /**
+     * Returns the amount of items in the Adapter
+     */
     public int getItemCount() {
         return dbCursor.getCount();
     }
