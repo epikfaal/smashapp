@@ -49,6 +49,10 @@ public class DataSource {
 
     }
 
+    public void deleteEvent(long eventID){
+        db.delete(Event.EventDBEntry.TABLE_NAME, Event.EventDBEntry._ID + "=?", new String[]{"" + eventID});
+    }
+
     public void updateEvent(long eventID, String newName, String newDate, float newLongtitude, float newLatitude){
         ContentValues values = new ContentValues();
         values.put(Event.EventDBEntry.COLUMN_NAME_EVENTNAME, newName);

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import java.sql.Date;
 import java.util.Calendar;
 
+import static android.view.View.VISIBLE;
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
 
@@ -25,6 +26,7 @@ public class AddEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
         Button button = (Button) findViewById(R.id.submitbutton);
+        Button deletebutton = (Button) findViewById(R.id.deletebutton);
         name = (EditText) findViewById(R.id.nameTextField);
         date = (DatePicker) findViewById(R.id.datePicker);
         longtitude = (EditText) findViewById(R.id.longTextField);
@@ -51,6 +53,18 @@ public class AddEventActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        deletebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent data = new Intent();
+                data.putExtra("id", getIntent().getLongExtra("id", -1));
+                setResult(OverViewActivity.DELETE_EVENT_REQUEST, data);
+                finish();
+            }
+        });
+
+        if(functionstring.equals("edit")) deletebutton.setVisibility(VISIBLE);
 
         locationButton.setOnClickListener(new View.OnClickListener() {
             @Override

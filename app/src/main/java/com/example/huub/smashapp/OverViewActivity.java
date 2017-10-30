@@ -22,6 +22,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 public class OverViewActivity extends AppCompatActivity implements EventListAdapter.EventListClickListener{
+    public final static int DELETE_EVENT_REQUEST = 1234567;
     RecyclerView rv;
 
     DataSource data;
@@ -124,6 +125,12 @@ public class OverViewActivity extends AppCompatActivity implements EventListAdap
             String eventdate = data.getIntExtra("eventday", 1)+"-"+data.getIntExtra("eventmonth",1)+"-"+data.getIntExtra("eventyear", 2020);
             //System.out.println("TESTID= " + data.getLongExtra("id", -1));
             this.data.updateEvent(data.getLongExtra("id", -1), data.getStringExtra("name"), eventdate, data.getFloatExtra("longtitude", 0), data.getFloatExtra("latitude", 0));
+            updateUI();
+        }
+
+        if(requestCode == 1235 && resultCode == DELETE_EVENT_REQUEST){
+            this.data.deleteEvent(data.getLongExtra("id", -1));
+            System.out.println("delete request send");
             updateUI();
         }
     }
