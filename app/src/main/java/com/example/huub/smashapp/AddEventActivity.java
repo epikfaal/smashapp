@@ -28,6 +28,8 @@ public class AddEventActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
+
+        // Create references too all relevant views
         Button button = (Button) findViewById(R.id.submitbutton);
         Button deletebutton = (Button) findViewById(R.id.deletebutton);
         name = (EditText) findViewById(R.id.nameTextField);
@@ -40,6 +42,8 @@ public class AddEventActivity extends AppCompatActivity {
         // getIntent().getStringExtra("function") could be null, this gets around exception calling .equals on a null object
         final String functionstring = getIntent().getStringExtra("function") == null ?  "" : getIntent().getStringExtra("function");
 
+        // Create a listener for the "add event" button, return to the last activity with an intent containing information of all the views
+        // if we are editting an event, the intent also contains the ID of the event we are editting
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,6 +61,8 @@ public class AddEventActivity extends AppCompatActivity {
             }
         });
 
+        // Create a listener for the delete button, return to the last activity with an intent containing the event ID
+        // the different resultcode indenties the delete request
         deletebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,8 +73,10 @@ public class AddEventActivity extends AppCompatActivity {
             }
         });
 
+        // If we are editting the event, make the delete button visible
         if(functionstring.equals("edit")) deletebutton.setVisibility(VISIBLE);
 
+        // Create a listener for the "pick location" button, start a new activity where the user can set the location of the event
         locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,8 +86,7 @@ public class AddEventActivity extends AppCompatActivity {
             }
         });
 
-
-
+        // If we are editting an event, fill in the data of the existing event
         if(functionstring.equals("edit")){
             Intent intent = getIntent();
 
@@ -105,6 +112,10 @@ public class AddEventActivity extends AppCompatActivity {
     }
 
     @Override
+    /**
+     * Resolve the pick location button, fill in the textboxes with the correct latitude and longtitude data
+     * @param data should contain extra doubles "lat" and "long" containing the latitude and longtitude data
+     */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == GET_LOCATION_ACTIVITY && resultCode == Activity.RESULT_OK){
