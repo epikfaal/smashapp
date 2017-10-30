@@ -7,32 +7,11 @@ import android.provider.BaseColumns;
  */
 
 public class Event {
-    private String unit, name;
-    //temp:
-    private double distance;
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public double getDistance() {
-        return distance;
-    }
-
-    public Event(){
-        unit = "KM";
-        name = "Sample Event";
-        distance = 8.4;
-    }
-    public Event (String unit, String name, double distance){
-        this.unit = unit;
-        this.name = name;
-        this.distance = distance;
-    }
+    /*
+    This class was originally going to be used as objects that would be created from the query of the global database.
+    However due to time constraints I decided to change the app so it at least complies to the rubric.
+    therefore this class is empty and it has a subclass that holds information for the database
+     */
     public static class EventDBEntry implements BaseColumns{
         public static final String TABLE_NAME = "events";
         public static final String COLUMN_NAME_EVENTNAME = "eventname";

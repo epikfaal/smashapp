@@ -18,6 +18,9 @@ import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
 
 public class AddEventActivity extends AppCompatActivity {
+
+    public final static int GET_LOCATION_ACTIVITY = 123;
+
     EditText name, longtitude, latitude;
     DatePicker date;
 
@@ -71,8 +74,7 @@ public class AddEventActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), MapsActivity.class);
                 intent.putExtra("function", "picklocation");
-                //TODO create static final variables for these requestcodes
-                startActivityForResult(intent, 1234);
+                startActivityForResult(intent, GET_LOCATION_ACTIVITY);
             }
         });
 
@@ -105,7 +107,7 @@ public class AddEventActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1234 && resultCode == Activity.RESULT_OK){
+        if(requestCode == GET_LOCATION_ACTIVITY && resultCode == Activity.RESULT_OK){
             longtitude.setText(data.getDoubleExtra("long", 0) + "");
             latitude.setText(data.getDoubleExtra("lat", 0) + "");
         }

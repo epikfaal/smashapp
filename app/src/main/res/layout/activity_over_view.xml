@@ -6,26 +6,20 @@
     android:layout_height="match_parent"
     tools:context="com.example.huub.smashapp.OverViewActivity">
 
-    <ToggleButton
-        android:id="@+id/listToggle"
-        android:layout_width="179dp"
-        android:layout_height="48dp"
-        android:text="ToggleButton"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
 
-    <ToggleButton
+
+    <Button
         android:id="@+id/mapsToggle"
         android:layout_width="179dp"
         android:layout_height="48dp"
-        android:text="ToggleButton"
+        android:text="View events on map"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"
-        app:layout_constraintTop_toBottomOf="@+id/listToggle"
+        app:layout_constraintTop_toBottomOf="@+id/mapsToggle"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="368dp"
         android:layout_height="460dp"

@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ToggleButton;
 
 import java.sql.Date;
@@ -23,12 +24,14 @@ import java.util.ArrayList;
 
 public class OverViewActivity extends AppCompatActivity implements EventListAdapter.EventListClickListener{
     public final static int DELETE_EVENT_REQUEST = 1234567;
+    public final static int ADD_EVENT_ACTIVITY = 1234;
+    public final static int EDIT_EVENT_ACTIVITY = 1235;
     RecyclerView rv;
 
     DataSource data;
     EventListAdapter rvAdapter;
     ArrayList<Event> eventList;
-    ToggleButton toggleButton;
+    Button viewOnMapButton;
     FloatingActionButton fab;
     LocationManager locationManager;
 
@@ -52,11 +55,11 @@ public class OverViewActivity extends AppCompatActivity implements EventListAdap
         data = new DataSource(this);
         data.open();
 
-        toggleButton = (ToggleButton) findViewById(R.id.mapsToggle);
+        viewOnMapButton = (Button) findViewById(R.id.mapsToggle);
 
         //PURELY DEBUGGING LOGGING CODE TODO: remove
-        System.out.println("DATABASE DEBUG:");
-        data.debug();
+//        System.out.println("DATABASE DEBUG:");
+//        data.debug();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rv.setLayoutManager(layoutManager);
@@ -91,11 +94,11 @@ public class OverViewActivity extends AppCompatActivity implements EventListAdap
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), AddEventActivity.class);
-                startActivityForResult(intent, 1234);
+                startActivityForResult(intent, ADD_EVENT_ACTIVITY);
             }
         });
 
-        toggleButton.setOnClickListener(new View.OnClickListener() {
+        viewOnMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), MapsActivity.class);
@@ -121,14 +124,14 @@ public class OverViewActivity extends AppCompatActivity implements EventListAdap
             updateUI();
         }
 
-        if(requestCode == 1235 && resultCode == Activity.RESULT_OK){
+        if(requestCode == EDIT_EVENT_ACTIVITY && resultCode == Activity.RESULT_OK){
             String eventdate = data.getIntExtra("eventday", 1)+"-"+data.getIntExtra("eventmonth",1)+"-"+data.getIntExtra("eventyear", 2020);
             //System.out.println("TESTID= " + data.getLongExtra("id", -1));
             this.data.updateEvent(data.getLongExtra("id", -1), data.getStringExtra("name"), eventdate, data.getFloatExtra("longtitude", 0), data.getFloatExtra("latitude", 0));
             updateUI();
         }
 
-        if(requestCode == 1235 && resultCode == DELETE_EVENT_REQUEST){
+        if(requestCode == EDIT_EVENT_ACTIVITY && resultCode == DELETE_EVENT_REQUEST){
             this.data.deleteEvent(data.getLongExtra("id", -1));
             System.out.println("delete request send");
             updateUI();
@@ -159,7 +162,7 @@ public class OverViewActivity extends AppCompatActivity implements EventListAdap
         Intent intent = new Intent(this, AddEventActivity.class);
         intent.putExtra("function", "edit");
         intent.putExtra("id", index);
-        startActivityForResult(intent, 1235);
+        startActivityForResult(intent, EDIT_EVENT_ACTIVITY);
     }
 
 
